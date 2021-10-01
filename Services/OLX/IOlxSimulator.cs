@@ -7,5 +7,7 @@
         Task SearchInOlx();
 
         Task CollectAllOffersFor(string searchTerm);
+
+        Task CollectAllOffersFor(string searchTerm, int maxPage);
     }
 }

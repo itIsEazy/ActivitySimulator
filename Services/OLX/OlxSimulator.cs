@@ -29,27 +29,46 @@
 
         public async Task CollectAllOffersFor(string searchTerm)
         {
+            await this.CollectAllOffersFor(searchTerm, 10000);
+        }
+
+        public async Task CollectAllOffersFor(string searchTerm, int maxPage)
+        {
+            List<MainPageOfferModel> allOffers = new List<MainPageOfferModel>();
+
             await this.OpenOlxAsync();
 
             string link = OlxConstants.baseSearchUrl + searchTerm + "/";
 
-            await this.CollectOffersInformationFromLink(link);
+            allOffers.AddRange(await this.CollectOffersInformationFromLink(link));
 
-            for (int i = 2; i < 10000; i++)
+            for (int i = 2; i <= maxPage; i++)
             {
                 string currLink = link + "?page=" + i.ToString();
 
-                await this.CollectOffersInformationFromLink(currLink);
+                var currOffers = await this.CollectOffersInformationFromLink(currLink);
+
+                if (currOffers == null)
+                {
+                    break;
+                }
+
+                allOffers.AddRange(currOffers);
             }
         }
 
-        private async Task CollectOffersInformationFromLink(string url)
+        private async Task<List<MainPageOfferModel>> CollectOffersInformationFromLink(string url)
         {
             Driver.Url = url;
 
             Thread.Sleep(Random.Next(2, 3) * 1000);
 
-            await this.TryToCollectInfoForMainPageOffers();
+            if (Driver.Url != url)
+            {
+                return null;
+            }
+
+            return await this.TryToCollectInfoForMainPageOffers();
         }
 
         private async Task<List<MainPageOfferModel>> TryToCollectInfoForMainPageOffers()
