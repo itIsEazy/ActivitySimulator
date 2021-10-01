@@ -7,21 +7,27 @@
     using System.Threading.Tasks;
 
     using ActivitySimulator.Models;
-
+    using ActivitySimulator.Services.OLX;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IOlxSimulator olxSimulator;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+            ILogger<HomeController> logger,
+            IOlxSimulator olxSimulator)
         {
             _logger = logger;
+            this.olxSimulator = olxSimulator;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            Task.Run(() => this.olxSimulator.SearchInOlx());
+
             return View();
         }
 
