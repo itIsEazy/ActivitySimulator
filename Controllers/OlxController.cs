@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using ActivitySimulator.Models.Olx;
     using ActivitySimulator.Services.OLX;
 
     using Microsoft.AspNetCore.Mvc;
@@ -20,9 +21,15 @@
 
         public async Task<IActionResult> Index()
         {
-            Task.Run(() => this.olxSimulator.CollectAllOffersFor("lego"));
-
             return View();
+        }
+
+        public async Task<IActionResult> Offers()
+        {
+            var model = new OlxOffersViewModel();
+            model.AllOffers = await this.olxSimulator.CollectAllOffersFor("lego", 1);
+
+            return View(model);
         }
     }
 }

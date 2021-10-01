@@ -1,0 +1,28 @@
+﻿@model OlxOffersViewModel
+
+<div class="col-lg-12 text-center">
+    @foreach (var offer in Model.AllOffers)
+    {
+        <div>
+            <img src="@offer.ImageUrl" alt="Offer image" />
+            <p>@offer.Title</p>
+            <p>@offer.PriceInfo</p>
+            <p>@offer.LocationInfo</p>
+            <div>
+                <a class="btn btn-outline-secondary text-center w-100" role="button">Check offer</a>
+            </div>
+        </div>
+
+        <hr />
+    }
+</div>
+
+
+
+
+
+
+
+
+
+

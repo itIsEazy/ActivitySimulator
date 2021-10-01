@@ -27,12 +27,12 @@
 
         public List<string> SearchInputs { get; set; }
 
-        public async Task CollectAllOffersFor(string searchTerm)
+        public async Task<List<MainPageOfferModel>> CollectAllOffersFor(string searchTerm)
         {
-            await this.CollectAllOffersFor(searchTerm, 10000);
+            return await this.CollectAllOffersFor(searchTerm, 10000);
         }
 
-        public async Task CollectAllOffersFor(string searchTerm, int maxPage)
+        public async Task<List<MainPageOfferModel>> CollectAllOffersFor(string searchTerm, int maxPage)
         {
             List<MainPageOfferModel> allOffers = new List<MainPageOfferModel>();
 
@@ -55,6 +55,8 @@
 
                 allOffers.AddRange(currOffers);
             }
+
+            return allOffers;
         }
 
         private async Task<List<MainPageOfferModel>> CollectOffersInformationFromLink(string url)

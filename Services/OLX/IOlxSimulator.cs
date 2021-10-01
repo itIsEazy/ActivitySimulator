@@ -1,13 +1,16 @@
 ﻿namespace ActivitySimulator.Services.OLX
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+
+    using ActivitySimulator.Services.OLX.Models;
 
     public interface IOlxSimulator
     {
         Task SearchInOlx();
 
-        Task CollectAllOffersFor(string searchTerm);
+        Task<List<MainPageOfferModel>> CollectAllOffersFor(string searchTerm);
 
-        Task CollectAllOffersFor(string searchTerm, int maxPage);
+        Task<List<MainPageOfferModel>> CollectAllOffersFor(string searchTerm, int maxPage);
     }
 }
