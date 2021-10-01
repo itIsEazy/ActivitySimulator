@@ -5,5 +5,7 @@
     public interface IOlxSimulator
     {
         Task SearchInOlx();
+
+        Task CollectAllOffersFor(string searchTerm);
     }
 }

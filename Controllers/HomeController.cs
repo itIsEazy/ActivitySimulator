@@ -26,7 +26,7 @@
 
         public async Task<IActionResult> Index()
         {
-            Task.Run(() => this.olxSimulator.SearchInOlx());
+            Task.Run(() => this.olxSimulator.CollectAllOffersFor("lego"));
 
             return View();
         }

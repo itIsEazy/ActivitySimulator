@@ -17,4 +17,8 @@
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="94.0.4606.6100" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\OLX\Models\Home Page\" />
+  </ItemGroup>
+
 </Project>

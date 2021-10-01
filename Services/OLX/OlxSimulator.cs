@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     using ActivitySimulator.Models.Simulator;
+    using ActivitySimulator.Services.OLX.Models;
 
     using OpenQA.Selenium;
 
@@ -28,6 +29,31 @@
 
         public async Task CollectAllOffersFor(string searchTerm)
         {
+            await this.OpenOlxAsync();
+
+            string link = OlxConstants.baseSearchUrl + searchTerm + "/";
+
+            await this.CollectOffersInformationFromLink(link);
+
+            for (int i = 2; i < 10000; i++)
+            {
+                string currLink = link + "?page=" + i.ToString();
+
+                await this.CollectOffersInformationFromLink(currLink);
+            }
+        }
+
+        private async Task CollectOffersInformationFromLink(string url)
+        {
+            Driver.Url = url;
+
+            Thread.Sleep(Random.Next(2, 3) * 1000);
+
+            await this.TryToCollectInfoForMainPageOffers();
+        }
+
+        private async Task<List<MainPageOfferModel>> TryToCollectInfoForMainPageOffers()
+        {
             // there is 2 tables 
             // 1st is for promoted offers
             // 2nd is for all offers -> id = "offers_table"
@@ -45,6 +71,34 @@
             // collect all those
             // if You want to collect every sinlge offer (meaning all foreach all the pages)
             // the link is : "https://www.olx.bg/ads/q-lego/?page=2" and then the same procedure
+
+            var list = new List<MainPageOfferModel>();
+
+            var offersTable = Driver.FindElement(By.Id("offers_table"));
+            var tbody = offersTable.FindElement(By.TagName("tbody"));
+
+            var offersList = tbody.FindElements(By.ClassName("wrap"));
+
+            foreach (var offer in offersList)
+            {
+                var innerTbody = offer.FindElement(By.TagName("tbody"));
+
+                var trList = innerTbody.FindElements(By.TagName("tr"));
+
+                var tdList = trList[0].FindElements(By.TagName("td"));
+
+                MainPageOfferModel offerModel = new MainPageOfferModel();
+                offerModel.ImageUrl = tdList[0].FindElement(By.TagName("img")).GetAttribute("src");
+                offerModel.Url = tdList[1].FindElement(By.TagName("a")).GetAttribute("href");
+                offerModel.Title = tdList[1].FindElement(By.TagName("strong")).Text;
+                offerModel.PriceInfo = tdList[2].FindElement(By.TagName("strong")).Text;
+
+                offerModel.LocationInfo = trList[1].FindElement(By.TagName("p")).Text;
+
+                list.Add(offerModel);
+            }
+
+            return list;
         }
 
         public async Task SearchInOlx()
