@@ -1,7 +1,7 @@
-using System;
-
 namespace ActivitySimulator.Models
 {
+    using System;
+
     public class ErrorViewModel
     {
         public string RequestId { get; set; }

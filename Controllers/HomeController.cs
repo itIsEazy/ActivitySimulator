@@ -1,14 +1,16 @@
-﻿using ActivitySimulator.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ActivitySimulator.Controllers
+﻿namespace ActivitySimulator.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using ActivitySimulator.Models;
+
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
