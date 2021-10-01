@@ -1,0 +1,54 @@
+
+
+
+
+
+
+When u see TryToPlay, TryToClick, TryToAccept etc ...
+method with Try in the beginning it means it has try - catch in it
+AND
+if it succeeded it continues
+if NOT it must 'log' error in future class Errors or something
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
