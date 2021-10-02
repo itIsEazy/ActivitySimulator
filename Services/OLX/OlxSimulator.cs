@@ -12,17 +12,9 @@
 
     public class OlxSimulator : WebSimulator, IOlxSimulator
     {
-        public OlxSimulator() : this(OlxConstants.defaultLegoSearch)
+        public OlxSimulator()
         {
-
-        }
-
-        public OlxSimulator(string search)
-        {
-            this.SearchInputs = new List<string>
-            {
-                search,
-            };
+            this.OpenOlxAsync();
         }
 
         public List<string> SearchInputs { get; set; }
@@ -41,20 +33,58 @@
             model.ImageUrls = await this.TryToExtractAllImageLinksFromOffer();
 
             await this.TryToCollectOfferInfo(model);
+            await this.TryToCollectOfferOwnerInfo(model);
+            await this.TryToCollectOfferLocationInfo(model);
 
             return model;
         }
 
         private async Task TryToCollectOfferLocationInfo(OfferModel model)
         {
-            var containers = Driver.FindElements(By.ClassName("css-1wws9er"));
-            var offerlocationInfo = containers[2];
+            try
+            {
+                var containers = Driver.FindElements(By.ClassName("css-1wws9er"));
+                var offerlocationInfo = containers[2];
+
+                var ps = offerlocationInfo.FindElements(By.TagName("p"));
+
+                foreach (var p in ps)
+                {
+                    model.LocationInfo += p.Text + " ";
+                }
+            }
+            catch (Exception)
+            {
+                // LOG ERROR HERE
+            }
         }
 
         private async Task TryToCollectOfferOwnerInfo(OfferModel model)
         {
-            var containers = Driver.FindElements(By.ClassName("css-1wws9er"));
-            var offerOwnerInfo = containers[1];
+            try
+            {
+                var containers = Driver.FindElements(By.ClassName("css-1wws9er"));
+                var offerOwnerInfo = containers[1];
+
+                model.UserAccountUrl = offerOwnerInfo.FindElement(By.TagName("a")).GetAttribute("href");
+                model.UserPhoneNumber = await this.TryToGetTheUserPhoneNumber(offerOwnerInfo);
+                model.UserName = offerOwnerInfo.FindElement(By.TagName("h2")).Text;
+            }
+            catch (Exception)
+            {
+                // LOG ERROR HERR
+            }
+        }
+
+        private async Task<string> TryToGetTheUserPhoneNumber(IWebElement offerOwnerInfo)
+        {
+            var buttons = offerOwnerInfo.FindElements(By.TagName("button"));
+            var phoneButton = buttons[1];
+            phoneButton.Click();
+
+            Thread.Sleep(1300);
+
+            return phoneButton.Text;
         }
 
         private async Task TryToCollectOfferInfo(OfferModel model)

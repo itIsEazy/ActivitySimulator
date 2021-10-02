@@ -13,6 +13,12 @@ namespace ActivitySimulator.Services.OLX.Models
 
         public string Description { get; set; }
 
+        public string UserName { get; set; }
+
+        public string UserAccountUrl { get; set; }
+
+        public string UserPhoneNumber { get; set; }
+
         public string PriceInfo { get; set; }
 
         public string LocationInfo { get; set; }
