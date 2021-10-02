@@ -9,6 +9,8 @@
     {
         Task SearchInOlx();
 
+        Task<OfferModel> OpenOffer(string url);
+
         Task<List<MainPageOfferModel>> CollectAllOffersFor(string searchTerm);
 
         Task<List<MainPageOfferModel>> CollectAllOffersFor(string searchTerm, int maxPage);

@@ -27,6 +27,91 @@
 
         public List<string> SearchInputs { get; set; }
 
+        public async Task<OfferModel> OpenOffer(string url)
+        {
+            OfferModel model = new OfferModel();
+
+            Driver.Url = url;
+
+            Thread.Sleep(Random.Next(2, 3) * 1000);
+
+            Task.Run(() => this.TryToAcceptCookiesAsync());
+
+            model.Url = Driver.Url;
+            model.ImageUrls = await this.TryToExtractAllImageLinksFromOffer();
+
+            await this.TryToCollectOfferInfo(model);
+
+            return model;
+        }
+
+        private async Task TryToCollectOfferLocationInfo(OfferModel model)
+        {
+            var containers = Driver.FindElements(By.ClassName("css-1wws9er"));
+            var offerlocationInfo = containers[2];
+        }
+
+        private async Task TryToCollectOfferOwnerInfo(OfferModel model)
+        {
+            var containers = Driver.FindElements(By.ClassName("css-1wws9er"));
+            var offerOwnerInfo = containers[1];
+        }
+
+        private async Task TryToCollectOfferInfo(OfferModel model)
+        {
+            try
+            {
+                var containers = Driver.FindElements(By.ClassName("css-1wws9er"));
+                var offerInfo = containers[0];
+
+                var dateTitlePrice = offerInfo.FindElements(By.TagName("div"));
+
+                model.DateInfo = dateTitlePrice[0].Text;
+                model.Title = dateTitlePrice[2].Text;
+                model.PriceInfo = dateTitlePrice[3].Text;
+                model.Description = dateTitlePrice[10].Text;
+                model.VisitationInfo = dateTitlePrice[12].Text;
+
+                var lis = offerInfo.FindElements(By.TagName("li"));
+
+                string deliveryAndCondition = "";
+
+                foreach (var li in lis)
+                {
+                    deliveryAndCondition += li.Text + " ";
+                }
+
+                model.DeliveryConditionInfo = deliveryAndCondition;
+            }
+            catch (Exception)
+            {
+                // LOG ERROR HERE
+            }
+        }
+
+        private async Task<List<string>> TryToExtractAllImageLinksFromOffer()
+        {
+            var allImageLinks = new List<string>();
+
+            try
+            {
+                var imagesDiv = Driver.FindElement(By.ClassName("swiper-wrapper"));
+
+                var allImgTags = imagesDiv.FindElements(By.TagName("img"));
+
+                foreach (var imgTag in allImgTags)
+                {
+                    allImageLinks.Add(imgTag.GetAttribute("src"));
+                }
+            }
+            catch (Exception)
+            {
+                // LOG ERROR HERE
+            }
+
+            return allImageLinks;
+        }
+
         public async Task<List<MainPageOfferModel>> CollectAllOffersFor(string searchTerm)
         {
             return await this.CollectAllOffersFor(searchTerm, 10000);
