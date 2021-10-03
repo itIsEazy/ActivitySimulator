@@ -6,6 +6,8 @@
         <h1 class="text-center">All your offers will appear here</h1>
     </div>
 
+    <hr />
+
     @if (Model.AllOffers.Count() <= 0 || Model.AllOffers == null)
     {
         <div class="col-lg-12">
@@ -14,6 +16,8 @@
             </button>
         </div>
     }
+
+    <hr />
 
     @foreach (var offer in Model.AllOffers)
     {
@@ -38,14 +42,50 @@
         searchButton.addEventListener("click", callForOffers);
 
         function callForOffers() {
-            $.get('/api/offers/lego/1', (data) => {
-                console.log(data);
+            $.get('/api/offers/lego/1', (offers) => {
+                offers.forEach(offer => {
+                    let divEl = document.createElement('div').setAttribute('id', offer.id);
+
+                    let imgEl = document.createElement('img').setAttribute('src', offer.imageUrl);
+                    divEl.appendChild(imgEl);
+
+                    let offerUrlEl = document.createElement('p').setAttribute('class', 'd-none');
+                    offerUrlEl.innerHTML = offer.Url;
+                    divEl.appendChild(offerUrlEl);
+
+                    let offerTitle = document.createElement('p');
+                    offerTitle.innerHTML = offer.Title;
+                    divEl.appendChild(offerTitle);
+
+                    let priceInfo = document.createElement('p');
+                    priceInfo.innerHTML = offer.PriceInfo;
+                    divEl.appendChild(priceInfo);
+
+                    let locationInfo = document.createElement('p');
+                    locationInfo.innerHTML = offer.locationInfo;
+                    divEl.appendChild(locationInfo);
+
+                    let btnContainer = document.createElement('div');
+                    let checkOfferBtn = document.createElement('a');
+                    checkOfferBtn.setAttribute('class', 'btn btn-outline-secondary text-center w-100');
+                    checkOfferBtn.setAttribute('role', 'button');
+                    checkOfferBtn.innerHTML = 'Check offer';
+                    btnContainer.appendChild(checkOfferBtn)
+
+                    divEl.appendChild(btnContainer);
+
+                    console.log(divEl);
+
+                    offersDiv.appendChild(divEl);
+                });;
             })
+
+            let offersDiv = document.getElementById('offersDiv');
+
+            
         }
     </script>
 }
-
-
 
 
 

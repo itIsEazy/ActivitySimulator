@@ -6,6 +6,7 @@ namespace ActivitySimulator
     using System.Threading.Tasks;
 
     using ActivitySimulator.Data;
+    using ActivitySimulator.Infrastructure.Extensions;
     using ActivitySimulator.Services.OLX;
 
     using Microsoft.AspNetCore.Builder;
@@ -45,6 +46,8 @@ namespace ActivitySimulator
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.PrepareDatabase();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
