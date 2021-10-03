@@ -31,5 +31,11 @@
 
             return await this.olxSimulator.OpenOffer(url);
         }
+
+        [HttpPost]
+        public async Task Post(OfferModel model)
+        {
+            await olxSimulator.SaveOfferAsync(model);
+        }
     }
 }

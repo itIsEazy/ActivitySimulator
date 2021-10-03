@@ -26,5 +26,6 @@
         {
             return await this.olxSimulator.CollectAllOffersFor(searchTerm, maxPage);
         }
+
     }
 }
