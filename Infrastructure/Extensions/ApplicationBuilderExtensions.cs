@@ -25,8 +25,6 @@
         {
             var data = services.GetRequiredService<ApplicationDbContext>();
 
-            data.Database.EnsureCreated();
-
             data.Database.Migrate();
         }
     }
