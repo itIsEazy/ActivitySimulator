@@ -13,6 +13,8 @@
 
         Task SaveOfferAsync(OfferModel offer);
 
+        Task<bool> DeleteOfferAsync(string offerId);
+
         Task<string> GetOfferUrlAsync(string offerId);
 
         Task<List<MainPageOfferModel>> CollectAllOffersFor(string searchTerm);

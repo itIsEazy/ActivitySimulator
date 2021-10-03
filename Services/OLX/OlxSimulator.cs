@@ -25,6 +25,19 @@
 
         public List<string> SearchInputs { get; set; }
 
+        public async Task<bool> DeleteOfferAsync(string offerId)
+        {
+            var offer = this.dbContext.Offers.Find(offerId);
+            if (offer == null)
+            {
+                return false;
+            }
+
+            this.dbContext.Offers.Remove(offer);
+            await this.dbContext.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<string> GetOfferUrlAsync(string offerId)
         {
             return this.dbContext.Offers.Where(x => x.Id == offerId).Select(x => x.Url).FirstOrDefault();

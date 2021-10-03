@@ -37,5 +37,16 @@
         {
             await olxSimulator.SaveOfferAsync(model);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (await olxSimulator.DeleteOfferAsync(id))
+            {
+                return this.NoContent();
+            }
+
+            return this.NotFound();
+        }
     }
 }
