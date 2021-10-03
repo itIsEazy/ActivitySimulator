@@ -1,11 +1,15 @@
 ﻿namespace ActivitySimulator.Services.OLX.Models
 {
+    using System;
+
     public class MainPageOfferModel
     {
         public MainPageOfferModel()
         {
-
+            this.Id = Guid.NewGuid().ToString();
         }
+
+        public string Id { get; set; }
 
         public string Title { get; set; }
 

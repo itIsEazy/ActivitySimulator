@@ -1,10 +1,25 @@
 ﻿@model OlxOffersViewModel
 
-<div class="col-lg-12 text-center">
+<div id="offersDiv" class="col-lg-12 text-center border">
+
+    <div class="col-lg-12 text-center">
+        <h1 class="text-center">All your offers will appear here</h1>
+    </div>
+
+    @if (Model.AllOffers.Count() <= 0 || Model.AllOffers == null)
+    {
+        <div class="col-lg-12">
+            <button id="searchBtn" class="btn btn-outline-secondary text-center w-100">
+                Search for offers
+            </button>
+        </div>
+    }
+
     @foreach (var offer in Model.AllOffers)
     {
-        <div>
+        <div id="@offer.Id">
             <img src="@offer.ImageUrl" alt="Offer image" />
+            <p class="d-none">@offer.Url</p>
             <p>@offer.Title</p>
             <p>@offer.PriceInfo</p>
             <p>@offer.LocationInfo</p>
@@ -16,6 +31,19 @@
         <hr />
     }
 </div>
+
+@section Scripts {
+    <script>
+        let searchButton = document.getElementById('searchBtn');
+        searchButton.addEventListener("click", callForOffers);
+
+        function callForOffers() {
+            $.get('/api/offers/lego/1', (data) => {
+                console.log(data);
+            })
+        }
+    </script>
+}
 
 
 

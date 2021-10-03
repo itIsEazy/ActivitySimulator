@@ -27,8 +27,6 @@
         public async Task<IActionResult> Offers()
         {
             var model = new OlxOffersViewModel();
-            model.AllOffers = await this.olxSimulator.CollectAllOffersFor("lego", 1);
-
             return View(model);
         }
     }

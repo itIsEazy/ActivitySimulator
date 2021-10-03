@@ -219,22 +219,33 @@
             {
                 var innerTbody = offer.FindElement(By.TagName("tbody"));
 
-                var trList = innerTbody.FindElements(By.TagName("tr"));
+                list.Add(this.TryToCollectInfoForOfferForMainPage(innerTbody));
+            }
 
+            return list;
+        }
+
+        private MainPageOfferModel TryToCollectInfoForOfferForMainPage(IWebElement innerTbody)
+        {
+            MainPageOfferModel offerModel = new MainPageOfferModel();
+
+            try
+            {
+                var trList = innerTbody.FindElements(By.TagName("tr"));
                 var tdList = trList[0].FindElements(By.TagName("td"));
 
-                MainPageOfferModel offerModel = new MainPageOfferModel();
                 offerModel.ImageUrl = tdList[0].FindElement(By.TagName("img")).GetAttribute("src");
                 offerModel.Url = tdList[1].FindElement(By.TagName("a")).GetAttribute("href");
                 offerModel.Title = tdList[1].FindElement(By.TagName("strong")).Text;
                 offerModel.PriceInfo = tdList[2].FindElement(By.TagName("strong")).Text;
 
                 offerModel.LocationInfo = trList[1].FindElement(By.TagName("p")).Text;
-
-                list.Add(offerModel);
+            }
+            catch (Exception)
+            {
             }
 
-            return list;
+            return offerModel;
         }
 
         public async Task SearchInOlx()
