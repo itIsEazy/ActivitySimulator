@@ -27,9 +27,15 @@
         [HttpGet("{id}")]
         public async Task<OfferModel> Get(string id)
         {
-            string url = "https://www.olx.bg/d/ad/konstruktor-lego-lego-technic-CID139-ID8trKe.html#2d0569c63a";
+            string url = "https://www.olx.bg/d/ad/hot-wheels-honda-prelude-1998g-honda-prelyud-1998g-novo-CID618-ID8Br3I.html#5e3015fe57";
 
             return await this.olxSimulator.OpenOffer(url);
+        }
+
+        [HttpPost("{content}/{offerId}")]
+        public async Task Comment(string content, string offerId)
+        {
+            await olxSimulator.CommentOfferAsync(content, offerId);
         }
 
         [HttpPost]

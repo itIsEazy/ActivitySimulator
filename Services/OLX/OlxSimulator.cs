@@ -19,7 +19,7 @@
 
         public OlxSimulator(ApplicationDbContext dbContext)
         {
-            this.OpenOlxAsync();
+            this.LogInUser("misho");
             this.dbContext = dbContext;
         }
 
@@ -60,6 +60,39 @@
 
             await dbContext.Offers.AddAsync(dbModelOffer);
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task CommentOfferAsync(string content, string offerId)
+        {
+            Driver.Url = "https://www.olx.bg/d/ad/hot-wheels-honda-prelude-1998g-honda-prelyud-1998g-novo-CID618-ID8Br3I.html#5e3015fe57";
+
+            Thread.Sleep(1000);
+
+            int counter = 0;
+            while (counter < 100)
+            {
+                try
+                {
+                    var textarea = Driver.FindElement(By.TagName("textarea"));
+                    textarea.SendKeys(content);
+
+                    var form = Driver.FindElement(By.TagName("form"));
+                    var btns = form.FindElements(By.TagName("button"));
+                    foreach (var btn in btns)
+                    {
+                        if (btn.Text == "Изпрати" || btn.Text == "Send" || btn.Text == "Send message")
+                        {
+                            btn.Click();
+                            break;
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
+
+            // TODO : add comment in the database
         }
 
         public async Task<OfferModel> OpenOffer(string url)
@@ -300,17 +333,44 @@
             Driver.Url = OlxConstants.baseSearchUrl + SearchInputs[0] + "/";
         }
 
+        private async Task LogInUser(string username)
+        {
+            string email = "getItFromSomeWhere";
+            string password = "getItFromSomeWhere";
+
+            Driver.Url = "https://www.olx.bg/account/?ref%5B0%5D%5Baction%5D=myaccount&ref%5B0%5D%5Bmethod%5D=index";
+
+            Task.Run(() => this.TryToAcceptCookiesAsync());
+
+            Thread.Sleep(1000);
+
+            var loginForm = Driver.FindElement(By.Id("loginForm"));
+
+            var inputs = loginForm.FindElements(By.TagName("input"));
+            inputs[0].SendKeys(email);
+            inputs[1].SendKeys(password);
+
+            var logInBtn = Driver.FindElement(By.Id("se_userLogin"));
+            logInBtn.Click();
+        }
+
         private async Task TryToAcceptCookiesAsync()
         {
-            try
+            int counter = 0;
+            while (counter < 10)
             {
-                var btn = Driver.FindElement(By.Id("onetrust-accept-btn-handler")); // they use this id attribute so we are lucky to get it that ez
+                try
+                {
+                    var btn = Driver.FindElement(By.Id("onetrust-accept-btn-handler")); // they use this id attribute so we are lucky to get it that ez
 
-                btn.Click();
-            }
-            catch (Exception)
-            {
-                // log error here
+                    btn.Click();
+                }
+                catch (Exception)
+                {
+                    // log error here
+                }
+
+                counter++;
             }
         }
 
