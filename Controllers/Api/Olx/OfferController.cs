@@ -15,10 +15,14 @@
     public class OfferController : ControllerBase
     {
         private readonly IOlxSimulator olxSimulator;
+        private readonly IOlxService olxService;
 
-        public OfferController(IOlxSimulator olxSimulator)
+        public OfferController(
+            IOlxSimulator olxSimulator,
+            IOlxService olxService)
         {
             this.olxSimulator = olxSimulator;
+            this.olxService = olxService;
         }
 
         // This could be changed with our own ID 
@@ -41,13 +45,13 @@
         [HttpPost]
         public async Task Post(OfferModel model)
         {
-            await olxSimulator.SaveOfferAsync(model);
+            await olxService.SaveOfferAsync(model);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            if (await olxSimulator.DeleteOfferAsync(id))
+            if (await olxService.DeleteOfferAsync(id))
             {
                 return this.NoContent();
             }

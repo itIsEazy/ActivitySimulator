@@ -2,12 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using ActivitySimulator.Data;
-    using ActivitySimulator.Data.Models.Olx;
     using ActivitySimulator.Models.Simulator;
     using ActivitySimulator.Services.OLX.Models;
 
@@ -15,55 +12,15 @@
 
     public class OlxSimulator : WebSimulator, IOlxSimulator
     {
-        private readonly ApplicationDbContext dbContext;
-
-        public OlxSimulator(ApplicationDbContext dbContext)
+        public OlxSimulator()
         {
             this.User = new OlxUser();
             this.LogInUser();
-            this.dbContext = dbContext;
         }
 
         public OlxUser User { get; set; }
 
         public List<string> SearchInputs { get; set; }
-
-        public async Task<bool> DeleteOfferAsync(string offerId)
-        {
-            var offer = this.dbContext.Offers.Find(offerId);
-            if (offer == null)
-            {
-                return false;
-            }
-
-            this.dbContext.Offers.Remove(offer);
-            await this.dbContext.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<string> GetOfferUrlAsync(string offerId)
-        {
-            return this.dbContext.Offers.Where(x => x.Id == offerId).Select(x => x.Url).FirstOrDefault();
-        }
-
-        public async Task SaveOfferAsync(OfferModel offer)
-        {
-            var dbModelOffer = new Offer();
-            dbModelOffer.Title = offer.Title;
-            dbModelOffer.Description = offer.Description;
-            dbModelOffer.UserName = offer.UserName;
-            dbModelOffer.UserAccountUrl = offer.UserAccountUrl;
-            dbModelOffer.UserPhoneNumber = offer.UserPhoneNumber;
-            dbModelOffer.PriceInfo = offer.PriceInfo;
-            dbModelOffer.LocationInfo = offer.LocationInfo;
-            dbModelOffer.DateInfo = offer.DateInfo;
-            dbModelOffer.VisitationInfo = offer.VisitationInfo;
-            dbModelOffer.DeliveryConditionInfo = offer.DeliveryConditionInfo;
-            dbModelOffer.Url = offer.Url;
-
-            await dbContext.Offers.AddAsync(dbModelOffer);
-            await dbContext.SaveChangesAsync();
-        }
 
         public async Task CommentOfferAsync(string content, string offerId)
         {
