@@ -19,9 +19,12 @@
 
         public OlxSimulator(ApplicationDbContext dbContext)
         {
-            this.LogInUser("misho");
+            this.User = new OlxUser();
+            this.LogInUser();
             this.dbContext = dbContext;
         }
+
+        public OlxUser User { get; set; }
 
         public List<string> SearchInputs { get; set; }
 
@@ -333,12 +336,9 @@
             Driver.Url = OlxConstants.baseSearchUrl + SearchInputs[0] + "/";
         }
 
-        private async Task LogInUser(string username)
+        private void LogInUser()
         {
-            string email = "getItFromSomeWhere";
-            string password = "getItFromSomeWhere";
-
-            Driver.Url = "https://www.olx.bg/account/?ref%5B0%5D%5Baction%5D=myaccount&ref%5B0%5D%5Bmethod%5D=index";
+            Driver.Url = OlxConstants.olxLogInUrl;
 
             Task.Run(() => this.TryToAcceptCookiesAsync());
 
@@ -347,8 +347,8 @@
             var loginForm = Driver.FindElement(By.Id("loginForm"));
 
             var inputs = loginForm.FindElements(By.TagName("input"));
-            inputs[0].SendKeys(email);
-            inputs[1].SendKeys(password);
+            inputs[0].SendKeys(this.User.Email);
+            inputs[1].SendKeys(this.User.Password);
 
             var logInBtn = Driver.FindElement(By.Id("se_userLogin"));
             logInBtn.Click();
