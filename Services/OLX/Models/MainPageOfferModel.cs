@@ -20,6 +20,6 @@
         public string Url { get; set; }
 
         // WARNING ! This must be saved in our hard drive and sended like img NOT like URL ! ! !
-        public string ImageUrl { get; set; }
+        public string MainImageUrl { get; set; }
     }
 }

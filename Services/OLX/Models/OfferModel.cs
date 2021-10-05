@@ -31,6 +31,8 @@ namespace ActivitySimulator.Services.OLX.Models
 
         public string Url { get; set; }
 
+        public string MainImageUrl { get; set; }
+
         public IEnumerable<string> ImageUrls { get; set; }
     }
 }

@@ -22,7 +22,7 @@
     @foreach (var offer in Model.AllOffers)
     {
         <div id="@offer.Id">
-            <img src="@offer.ImageUrl" alt="Offer image" />
+            <img src="@offer.MainImageUrl" alt="Offer image" />
             <p class="d-none">@offer.Url</p>
             <p>@offer.Title</p>
             <p>@offer.PriceInfo</p>

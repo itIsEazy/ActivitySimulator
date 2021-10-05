@@ -15,17 +15,24 @@
     public class OffersController : ControllerBase
     {
         private readonly IOlxSimulator olxSimulator;
+        private readonly IOlxService olxService;
 
-        public OffersController(IOlxSimulator olxSimulator)
+        public OffersController(
+            IOlxSimulator olxSimulator,
+            IOlxService olxService)
         {
             this.olxSimulator = olxSimulator;
+            this.olxService = olxService;
         }
 
         [HttpGet("{searchTerm}/{maxPage}")]
         public async Task<IEnumerable<MainPageOfferModel>> Get(string searchTerm, int maxPage)
         {
-            return await this.olxSimulator.CollectAllOffersFor(searchTerm, maxPage);
-        }
+            var models = await this.olxSimulator.CollectAllOffersFor(searchTerm, maxPage);
 
+            await this.olxService.SaveOffersAsync(models);
+
+            return models;
+        }
     }
 }

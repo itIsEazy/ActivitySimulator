@@ -187,8 +187,6 @@
         {
             List<MainPageOfferModel> allOffers = new List<MainPageOfferModel>();
 
-            await this.OpenOlxAsync();
-
             string link = OlxConstants.baseSearchUrl + searchTerm + "/";
 
             allOffers.AddRange(await this.CollectOffersInformationFromLink(link));
@@ -270,7 +268,7 @@
                 var trList = innerTbody.FindElements(By.TagName("tr"));
                 var tdList = trList[0].FindElements(By.TagName("td"));
 
-                offerModel.ImageUrl = tdList[0].FindElement(By.TagName("img")).GetAttribute("src");
+                offerModel.MainImageUrl = tdList[0].FindElement(By.TagName("img")).GetAttribute("src");
                 offerModel.Url = tdList[1].FindElement(By.TagName("a")).GetAttribute("href");
                 offerModel.Title = tdList[1].FindElement(By.TagName("strong")).Text;
                 offerModel.PriceInfo = tdList[2].FindElement(By.TagName("strong")).Text;

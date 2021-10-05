@@ -35,6 +35,8 @@
 
         public string Url { get; set; }
 
+        public string MainImageUrl { get; set; }
+
         public virtual IEnumerable<Image> Images { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace ActivitySimulator.Services.OLX
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -34,6 +35,21 @@
             return true;
         }
 
+        public async Task SaveOffersAsync(IEnumerable<MainPageOfferModel> offers)
+        {
+            foreach (var offer in offers)
+            {
+                var currOffer = new OfferModel();
+                currOffer.Title = offer.Title;
+                currOffer.PriceInfo = offer.PriceInfo;
+                currOffer.LocationInfo = offer.LocationInfo;
+                currOffer.Url = offer.Url;
+                currOffer.MainImageUrl = offer.MainImageUrl;
+
+                await this.SaveOfferAsync(currOffer);
+            }
+        }
+
         public async Task SaveOfferAsync(OfferModel offer)
         {
             var dbModelOffer = new Offer();
@@ -48,6 +64,7 @@
             dbModelOffer.VisitationInfo = offer.VisitationInfo;
             dbModelOffer.DeliveryConditionInfo = offer.DeliveryConditionInfo;
             dbModelOffer.Url = offer.Url;
+            dbModelOffer.MainImageUrl = offer.MainImageUrl;
 
             await dbContext.Offers.AddAsync(dbModelOffer);
             await dbContext.SaveChangesAsync();
