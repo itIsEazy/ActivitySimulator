@@ -12,20 +12,53 @@ if NOT it must 'log' error in future class Errors or something
 
 
 
+Automated searches
+
+STEPS : 
+
+List<string> searchInputs
+
+foreach searchInput in searchInputs
+
+	SearcFor(searchInput)
+		
+		
 
 
+HARDPART : 
+Problem :
+We have list of offers we need to check! BUT foreach offer we have to open it and see its description to be 100% sure
+there is not something in our 'key words' we miss
+
+eZ solution: 
+open $"https://www.olx.bg/ads/q-{searchInput}/" every 10 minutes ? 15 mins ...
+and check every offer .. ez as it is
+
+The problem there is we will wait 10 mins ... and for 10 min we can miss all the good offers
+(yes most of the best offers i found on olx, bazar etc vanished in less then 10min.. sometimes 5mins is a lot ...)
 
 
+HARD solution:
+
+every 1 min? 5 min idk maybe r.Next(1,5 * 60 * 1000)
+refresh / call $"https://www.olx.bg/ads/q-{searchInput}/"
+
+get last 10 / 20 offers (1st page only is more than enough if u refresh every 5 - 10 minutes)
 
 
+compare currLast10 with last10 offers
 
+foreach currOffer in currLast10
 
-
-
-
-
-
-
+	if last10.Contains(currOffer) // or .Name == .Name ...
+		
+		List<Offer> offersToCheckForKeyWords = currLast10[0] to currOffer[i] //
+		aka check all the offers until u find offer in your previous listed offer
+		WARNIGN !!!!!!!!!!!!!!!!!!!!!!!!!
+		will be great if u add foreach for ALL the offers from this day and REcheck them
+		/this must be done in case somebody adds or changes something in their offer, so u can catch it/
+		
+		
 
 
 

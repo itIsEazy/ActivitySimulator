@@ -18,6 +18,30 @@
 
         public Random Random { get; set; }
 
+        public void TryTo(Action func)
+        {
+            try
+            {
+                func();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void TryTo<T>(Func<T> func)
+        {
+            try
+            {
+                func();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public void SaveTextInNewFile(string path, string text)
         {
             if (!File.Exists(path))

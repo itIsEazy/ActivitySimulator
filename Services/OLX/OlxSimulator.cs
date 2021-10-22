@@ -14,6 +14,16 @@
     {
         public OlxSimulator()
         {
+            this.SearchInputs = new List<string>();
+            this.LegoStarWarsKeyWords = new List<string> 
+            {
+                "clone", "clone wars", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+                 "commander", "captain", "fox", "rex", "cody", "trooper", "clone trooper", "", "", "", "", "", "", "", "", "",
+                  "jango", "boba", "fett", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+                   "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+                    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+            };
+
             this.User = new OlxUser();
             this.LogInUser();
         }
@@ -21,6 +31,8 @@
         public OlxUser User { get; set; }
 
         public List<string> SearchInputs { get; set; }
+
+        public List<string> LegoStarWarsKeyWords { get; set; }
 
         public async Task CommentOfferAsync(string content, string offerId)
         {
