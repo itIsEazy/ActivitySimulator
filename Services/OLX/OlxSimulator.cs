@@ -15,6 +15,7 @@
         public OlxSimulator()
         {
             this.SearchInputs = new List<string>();
+            this.DailyLastOffers = this.GetLastDailyLastOffers();
             this.LegoStarWarsKeyWords = new List<string> 
             {
                 "clone", "clone wars", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
@@ -28,11 +29,48 @@
             this.LogInUser();
         }
 
+        public int CheckIntervalMin { get; set; }
+
         public OlxUser User { get; set; }
 
         public List<string> SearchInputs { get; set; }
 
         public List<string> LegoStarWarsKeyWords { get; set; }
+
+        public List<OfferModel> DailyLastOffers { get; set; }
+
+        // --------------------------------Check for offers---------------------------------------------------
+
+        private void SendMessageToInstagramDealer()
+        {
+            // POST / GET localhost/message/username/messageContent ? maybe
+            // also would be great if u save the sended messages in ur currLocalDatabase (using OlxService)
+        }
+
+        public void CheckForOffers(int repeatIntervalInMinutes)
+        {
+            this.CheckIntervalMin = repeatIntervalInMinutes;
+
+            while (true)
+            {
+                // Collect INFO
+
+                // Filter Info
+
+                // Send the extracted information
+
+                // Wait interval in Minutes and repeat
+
+                // if breakLoop == true ; break;
+            }
+        }
+
+        private List<OfferModel> GetLastDailyLastOffers()
+        {
+            List<OfferModel> offerModels = new List<OfferModel>();
+
+            return offerModels;
+        }
 
         public async Task CommentOfferAsync(string content, string offerId)
         {

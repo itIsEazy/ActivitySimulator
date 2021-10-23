@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace ActivitySimulator.Services.OLX.Models
+﻿namespace ActivitySimulator.Services.OLX.Models
 {
+    using System.Collections.Generic;
+
     public class OfferModel
     {
         public OfferModel()
