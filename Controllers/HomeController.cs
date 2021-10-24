@@ -7,22 +7,23 @@
     using System.Threading.Tasks;
 
     using ActivitySimulator.Models;
-
+    using ActivitySimulator.Services.Crypto;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ICoinMarketCapService coinMarketCapService;
 
         public HomeController(
-            ILogger<HomeController> logger)
+            ICoinMarketCapService coinMarketCapService)
         {
-            _logger = logger;
+            this.coinMarketCapService = coinMarketCapService;
         }
 
         public async Task<IActionResult> Index()
         {
+            this.coinMarketCapService.MakeApiCall();
             return View();
         }
 

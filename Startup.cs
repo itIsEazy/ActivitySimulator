@@ -7,6 +7,7 @@ namespace ActivitySimulator
 
     using ActivitySimulator.Data;
     using ActivitySimulator.Infrastructure.Extensions;
+    using ActivitySimulator.Services.Crypto;
     using ActivitySimulator.Services.OLX;
 
     using Microsoft.AspNetCore.Builder;
@@ -41,7 +42,9 @@ namespace ActivitySimulator
             services.AddControllersWithViews();
 
             services.AddSingleton<IOlxSimulator, OlxSimulator>();
+
             services.AddTransient<IOlxService, OlxService>();
+            services.AddTransient<ICoinMarketCapService, CoinMarketCapService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

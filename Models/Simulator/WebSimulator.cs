@@ -1,6 +1,7 @@
 ﻿namespace ActivitySimulator.Models.Simulator
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     using OpenQA.Selenium;
@@ -12,11 +13,15 @@
         {
             this.Driver = new ChromeDriver();
             this.Random = new Random();
+
+            this.Errors = new HashSet<CustomError>();
         }
 
         public IWebDriver Driver { get; set; }
 
         public Random Random { get; set; }
+
+        public IEnumerable<CustomError> Errors { get; set; }
 
         public void TryTo(Action func)
         {

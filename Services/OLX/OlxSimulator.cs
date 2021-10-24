@@ -47,23 +47,92 @@
             // also would be great if u save the sended messages in ur currLocalDatabase (using OlxService)
         }
 
-        public void CheckForOffers(int repeatIntervalInMinutes)
+        public async Task CheckForOffers(int repeatIntervalInMinutes)
         {
             this.CheckIntervalMin = repeatIntervalInMinutes;
 
             while (true)
             {
-                // Collect INFO
+                // var some model to collect ALL the info ;
 
-                // Filter Info
+                foreach (var searchTerm in SearchInputs)
+                {
+                    // Collect INFO
 
-                // Send the extracted information
+                    // Filter Info
 
-                // Wait interval in Minutes and repeat
+                    // Send the extracted information
 
-                // if breakLoop == true ; break;
+                    // Wait interval in Minutes and repeat
+
+                    // if breakLoop == true ; break;
+                }
+
             }
         }
+
+        private List<string> ExtractCurrentLastOffersUrls(string searchTerm, int maxPage)
+        {
+            List<string> currOffersUrls = new List<string>();
+
+            string link = OlxConstants.baseSearchUrl + searchTerm + "/";
+
+            Driver.Url = link;
+
+            Thread.Sleep(Random.Next(2, 3) * 1000);
+
+            if (Driver.Url != link)
+            {
+                return null;
+            }
+
+            var offersTable = Driver.FindElement(By.Id("offers_table"));
+            var tbody = offersTable.FindElement(By.TagName("tbody"));
+
+            var offersList = tbody.FindElements(By.ClassName("wrap"));
+
+            foreach (var offer in offersList)
+            {
+                var innerTbody = offer.FindElement(By.TagName("tbody"));
+
+                try
+                {
+                    var trList = innerTbody.FindElements(By.TagName("tr"));
+                    var tdList = trList[0].FindElements(By.TagName("td"));
+
+                    string currOfferUrl = tdList[1].FindElement(By.TagName("a")).GetAttribute("href");
+                    currOffersUrls.Add(currOfferUrl);
+                }
+                catch (Exception)
+                {
+                    // LOG that something went wrong with collecting the LINKS / URLs for all the offers
+                }
+            }
+
+            return currOffersUrls;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private List<OfferModel> GetLastDailyLastOffers()
         {

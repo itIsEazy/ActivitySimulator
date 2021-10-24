@@ -3,6 +3,8 @@
     public static class Constants
     {
         public const string structurePath = @"C:\Users\35989\Desktop\ActivitySimulatorStructure.txt";
+
+        public const string apiKeyPath = @"C:\Users\35989\Desktop\cMcKeY.txt";
     }
 
     public class OlxConstants
